@@ -2,7 +2,10 @@
 
 ## Introduction
 Conventional transformer that transforms a human face to the corresponding emoji uses method that trains data with labeled, for example assign numbers to each emotion.
-And corresponding emojis are subordinated to the number. However, we used a different approach : namely, we train emojis seperately like human faces. By doing that, we can pick utmost similar emoji by using cosine-similarity between human-face vector and emoji vector.
+And corresponding emojis are subordinated to the number. However, we used a different approach : namely, we train emojis seperately like human faces. Then, we can assign vectors to newly-added emotion emojis by putting it as an input. By doing that, we can pick utmost similar emoji by using cosine-similarity between human-face vector and emoji vectors.
+
+## How to add new emojis?
+Simply put new emoji in the src/test folder.
 
 ## Advantage
 1. We can add much more emojis than 7 emotions, like "superhappy", which can be exampled by testing superhappy.jpg
