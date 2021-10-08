@@ -13,7 +13,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # command line argument
 ap = argparse.ArgumentParser()
-ap.add_argument("--mode",help="train/display")
+ap.add_argument("--mode",help="train/resume")
 mode = ap.parse_args().mode
 
 # plots accuracy and loss curves
@@ -98,26 +98,11 @@ if mode == "train":
     plot_model_history(model_info)
     model.save_weights('model.h5')
 
-# emotions will be displayed on your face from the webcam feed
-elif mode == "display":
+elif mode == "resume":
     model.load_weights('model.h5')
-
-    # prevents openCL usage and unnecessary logging messages
-    cv2.ocl.setUseOpenCL(False)
-
-    # dictionary which assigns each label an emotion (alphabetical order)
-    emotion_dict = {0: "angry", 1: "disgusted", 2: "fearful", 3: "happy", 4: "neutral", 5: "sad", 6: "surprised"}
-
-    # start the webcam feed
-    frame = cv2.imread("test.jpg", cv2.IMREAD_COLOR)
-    facecasc = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = facecasc.detectMultiScale(gray,scaleFactor=1.3, minNeighbors=5)
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
-        roi_gray = gray[y:y + h, x:x + w]
-        cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
-        prediction = model.predict(cropped_img)
-        maxindex = int(np.argmax(prediction))
-        cv2.imshow('image', cv2.imread("test/{0}.png".format(emotion_dict[maxindex]), cv2.IMREAD_COLOR))
-        cv2.waitKey(0)
+    model.compile(loss='categorical_crossentropy',optimizer=Adam(lr=0.0001, decay=1e-6),metrics=['accuracy'])
+    model_info = model.fit(
+            train_generator,
+            epochs=num_epoch)
+    plot_model_history(model_info)
+    model.save_weights('model.h5')

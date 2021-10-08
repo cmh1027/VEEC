@@ -16,7 +16,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # command line argument
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode",help="train/display")
+    ap.add_argument("--mode",help="train/resume")
     mode = ap.parse_args().mode
 else:
     mode = "display"

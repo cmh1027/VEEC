@@ -14,4 +14,15 @@ Because our emoji dataset is too small, we used several data augmentation method
 ## Dependencies
 * Python 3, [OpenCV](https://opencv.org/), [Tensorflow](https://www.tensorflow.org/)
 
+## How to train
+### train faces & emojis
+src/emotions_original.py train
+src/emotions_emoji.py train
 
+### resuming train
+src/emotions_original.py resume
+src/emotions_emoji.py resume
+
+## How to test
+python src/main.py "image"
+ex. python src/main.py superhappy.jpg
